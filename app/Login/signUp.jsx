@@ -1,12 +1,52 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Colors from '../../constant/Colors';
 import { useRouter } from 'expo-router';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { useState } from 'react';
+import { Alert, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { auth } from '../../config/FirebaseConfig';
+import Colors from '../../constant/Colors';
 
 export default function SignUp() {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [userName, setUserName] = useState();
+
+  // Helper for showing toast on Android and alert elsewhere
+  const showMessage = (msg) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
+    } else {
+      Alert.alert('Notification', msg);
+    }
+  };
+
+  const onCreateAccount = () => {
+    if (!email || !password || !userName) {
+      showMessage('Please enter both email and password.');
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async(userCredential) => {
+        const user = userCredential.user;
+        await updateProfile(user, {
+          displayName: userName,
+        })
+        router.push('(tabs)');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error('Error creating user:', errorCode, errorMessage);
+        if (errorCode === 'auth/email-already-in-use') {
+          showMessage('Email already in use. Please use a different email.');
+        } else {
+          showMessage(errorMessage);
+        }
+      });
+  };
 
   return (
     <View style={{ padding: 25 }}>
@@ -16,12 +56,18 @@ export default function SignUp() {
 
       <View style={{ marginTop: 25 }}>
         <Text>Full Name</Text>
-        <TextInput placeholder='Enter your Full Name' style={styles.textInput} autoCapitalize='words' />
+        <TextInput placeholder='Enter your Full Name' style={styles.textInput} autoCapitalize='words' 
+        onChangeText={(value)=>setUserName(value)}/>
       </View>
 
       <View style={{ marginTop: 25 }}>
         <Text>Email</Text>
-        <TextInput placeholder='Enter your Email' style={styles.textInput} autoCapitalize='none' />
+        <TextInput
+          placeholder='Enter your Email'
+          style={styles.textInput}
+          autoCapitalize='none'
+          onChangeText={(value)=> setEmail(value)} // Trim whitespace
+        />
       </View>
 
       <View style={{ marginTop: 25 }}>
@@ -33,6 +79,7 @@ export default function SignUp() {
             autoCapitalize='none'
             autoCorrect={false}
             style={styles.textInput}
+          onChangeText={(value)=> setPassword(value)}
           />
           <TouchableOpacity
             onPress={() => setPasswordVisible(!passwordVisible)}
@@ -52,7 +99,7 @@ export default function SignUp() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onCreateAccount}>
         <Text style={{
           fontSize: 18,
           fontWeight: 'bold',
