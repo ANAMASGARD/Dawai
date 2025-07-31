@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Alert, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../config/FirebaseConfig';
 import Colors from '../../constant/Colors';
+import { setLocalStorage } from '../../service/Storage';
 
 export default function SignUp() {
   const router = useRouter();
@@ -34,6 +35,8 @@ export default function SignUp() {
         await updateProfile(user, {
           displayName: userName,
         })
+
+        await setLocalStorage('userDetail', user);
         router.push('(tabs)');
       })
       .catch((error) => {

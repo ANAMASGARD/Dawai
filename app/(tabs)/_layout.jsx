@@ -8,28 +8,21 @@ import {getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useState } from 'react';
 
 import { auth } from '../../config/FirebaseConfig'; // Adjust the import path as necessary
+import { getLocalStorage } from '../../service/Storage';
 
 export default function TabLayout() {
-  const router = useRouter();
-  const [authenticated, setAuthenticated] = useState(null);
   
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      console.log('User ID:', uid);
-      setAuthenticated(true); // Set auth state to true if user is signed in
-    } else {
-      console.log('No user is signed in.');
-    
-      setAuthenticated(false); // Set auth state to false if no user is signed in
+  const router = useRouter();
+  useEffect(() =>{
+    GetUserDetail();
+  },[])
+  
+  const GetUserDetail=async()=>{
+    const userInfo = await getLocalStorage('userDetail');
+    if(!userInfo){
+      router.replace('/Login');
     }
-  });
-
-  useEffect(() => {
-    if (authenticated === false) {
-      router.replace('/Login'); // Redirect to Login if not authenticated
-    }
-  }, [authenticated, router]);
+  }
 
   return (
    <Tabs screenOptions={{
