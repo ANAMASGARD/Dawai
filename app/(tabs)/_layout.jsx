@@ -5,6 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
+
 export default function TabLayout() {
   return (
    <Tabs screenOptions={{
@@ -30,6 +31,17 @@ export default function TabLayout() {
         ),
       }}
     />
+    <Tabs.Screen
+      name="Camera"
+      options={{
+        title: 'AI',
+        tabBarIcon: ({ color,size }) => (
+          <FontAwesome5 name="camera" size={size} color={color} />
+         
+        ),
+      }}
+    />
+
     <Tabs.Screen
       name="Profile"
       options={{
