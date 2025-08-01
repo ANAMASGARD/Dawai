@@ -25,19 +25,33 @@ export default function SignUp() {
 
   const onCreateAccount = () => {
     if (!email || !password || !userName) {
-      showMessage('Please enter both email and password.');
+      showMessage('Please enter all fields.');
       return;
     }
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(async(userCredential) => {
         const user = userCredential.user;
+        
+        // Update the profile with displayName
         await updateProfile(user, {
           displayName: userName,
-        })
-
-        await setLocalStorage('userDetail', user);
-        router.push('(tabs)');
+        });
+        
+        // Create a user object with displayName included
+        const userToStore = {
+          uid: user.uid,
+          email: user.email,
+          displayName: userName, // Explicitly set the displayName
+          emailVerified: user.emailVerified,
+          // Add other properties you might need
+        };
+        
+        console.log('Storing user:', userToStore);
+        
+        // Store the custom user object
+        await setLocalStorage('userDetail', userToStore);
+        router.replace('/(tabs)');
       })
       .catch((error) => {
         const errorCode = error.code;
