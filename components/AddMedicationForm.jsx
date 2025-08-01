@@ -9,7 +9,7 @@ import { db } from '../config/FirebaseConfig';
 import Colors from '../constant/Colors';
 import { TypeList, WhenToTake } from '../constant/Options';
 import { getLocalStorage } from '../service/AsyncStorageService';
-import { FormatedDateForText, formatTime } from '../service/ConvertDateTime';
+import { FormatedDateForText, formatTime, getDatesRange } from '../service/ConvertDateTime';
 import { useRouter } from 'expo-router';
 
 
@@ -36,6 +36,9 @@ const SaveMedication = async( ) => {
     Alert.alert('Please fill all fields');
     return;
   }
+
+  const dates=getDatesRange(formData?.startDate, formData?.endDate);
+  console.log(dates);
   setLoading(true);
   
   try {
@@ -43,6 +46,7 @@ const SaveMedication = async( ) => {
       ...formData,
       userEmail: user?.email,
       docId: docId,
+      dates: dates,
     });
     setLoading(false);
     Alert.alert('Success', 'Medication added successfully!', [

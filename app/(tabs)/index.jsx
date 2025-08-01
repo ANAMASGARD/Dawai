@@ -6,6 +6,7 @@ import { auth } from '../../config/FirebaseConfig'
 import Headers from '../../components/Header'
 import { RemoveLocalStorage } from '../../service/Storage'
 import EmptyState from '../../components/EmptyState'
+import MedicationList from '../../components/MedicationList'
 
 
 export default function HomeScreen() {
@@ -17,7 +18,9 @@ export default function HomeScreen() {
      
     }}>
       <Headers />
-      <EmptyState />
+      
+
+      <MedicationList />
       
     </View>
   )

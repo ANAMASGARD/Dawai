@@ -10,38 +10,39 @@ export default function EmptyState() {
   return (
     <View style={{
       flex: 1,
-      marginTop: 80,
+      marginTop: 40,
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'center',
     }}>
      <Image source={require('../assets/images/medicine.png')}
       style={{
-        width: 200,
-        height: 200,
+        width: 120,
+        height: 120,
         
       }} />
       <Text style={{
-        fontSize: 35,
+        fontSize: 28,
         fontWeight: 'bold',
         color: '#000',
-        marginTop: 30,
+        marginTop: 20,
         
       }}>{ConstantString.NoMedication}</Text>
       <Text style={{
-        fontSize: 18,
+        fontSize: 16,
         color: Colors.DARK_GRAY,
         textAlign: 'center',
-        marginTop: 20,
+        marginTop: 15,
         paddingHorizontal: 20,
       }}>
        {ConstantString.NoMedicationSubText}
       </Text>
       <TouchableOpacity style={{
         backgroundColor: Colors.PRIMARY,
-        padding: 15,
+        padding: 12,
         borderRadius: 99,
-        width: '100%',
-        marginTop: 20,
+        width: '90%',
+        marginTop: 25,
         display: 'flex',
         alignItems: 'center',
       }}
