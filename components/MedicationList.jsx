@@ -115,7 +115,7 @@ renderItem={({ item, index }) => (
              }
         })
     }>
-        <MedicationCardItem medicine={item}/>
+        <MedicationCardItem medicine={item} selectedDate={selectedDate}/>
     </TouchableOpacity>
 )}
 />:<EmptyState/>}

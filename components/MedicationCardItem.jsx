@@ -1,11 +1,25 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { StyleSheet } from 'react-native';
-import Colors from '../constant/Colors';
-import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import Colors from '../constant/Colors';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-export default function MedicationCardItem({medicine}) {
+
+export default function MedicationCardItem({medicine,selectedDate=''}) {
+    console.log("medicine", medicine);
+    const [status, setStatus] = useState();
+
+    useEffect(() => {
+        CheckStatus();
+    }, [selectedDate]);
+
+    const CheckStatus=() => {
+        const data= medicine?.action?.find((item) => {
+            return item?.date === selectedDate;
+            console.log("--", data);
+            setStatus(data);
+        })
+    }
   return (
     <View style={styles.container}>
           <View style={styles.subContainer}>
@@ -21,7 +35,7 @@ export default function MedicationCardItem({medicine}) {
     <View>
         <Text style={{fontSize:22,fontWeight:'bold'}}>{medicine?.name}</Text>
          <Text style={{fontSize:17}}>{medicine?.when}</Text>
-          <Text style={{color:'white'}}>{medicine?.dose} {medicine?.type.name}</Text>
+          <Text style={{color:'white'}}>{medicine?.dose} {medicine?.type?.name}</Text>
     </View>
     </View>
     <View style={styles.remainderContainer}>
@@ -30,6 +44,13 @@ export default function MedicationCardItem({medicine}) {
             {medicine?.reminder}
         </Text>
     </View>
+      {status?.date&&  <View style={styles.statusContainer}>
+{status?.status=='Taken'?<Ionicons name="checkmark-circle" 
+size={24} color={Colors.GREEN} />:
+status?.status=='Skipped'?<Ionicons name="close-circle" size={24} color="red" />:
+<Ionicons name="help-circle" size={24} color="black" />
+}
+    </View>}
     </View>
   )
 }
@@ -68,6 +89,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Colors.LIGHT_GRAY_BORDER,
+    },
+    statusContainer: {
+        position: 'absolute',
+        gap:5,
+        padding: 10,
     }
 
 })

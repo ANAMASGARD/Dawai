@@ -4,8 +4,11 @@ export default function RootLayout() {
   return <Stack screenOptions={{ headerShown: false 
 
   }}>
-    <Stack.Screen name="(tabs)/Profile" />
+    <Stack.Screen name="(tabs)" />
     <Stack.Screen name="Login" />
+    <Stack.Screen name="action-modal" 
+    options={{ presentation: 'modal' }}
+    />
    
       </Stack>;
 }

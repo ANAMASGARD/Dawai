@@ -1,8 +1,7 @@
-import { View, Text ,Image, TouchableOpacity} from 'react-native'
-import React from 'react'
-import ConstantString from '../constant/ConstantString'
-import Colors from '../constant/Colors'
 import { useRouter } from 'expo-router'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
+import Colors from '../constant/Colors'
+import ConstantString from '../constant/ConstantString'
 
 
 export default function EmptyState() {
