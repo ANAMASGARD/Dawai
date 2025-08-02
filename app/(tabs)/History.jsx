@@ -93,7 +93,7 @@ export default function History() {
               {item.day}
             </Text>
             <Text style={[styles.date, { color: item.formattedDate == selectedDate ? 'white' : 'black' }]}>
-              {item.date}
+              {item.date} 
             </Text>
           </TouchableOpacity>
         )}

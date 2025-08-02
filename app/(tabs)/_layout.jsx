@@ -1,32 +1,34 @@
-import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
-import { Tabs, useRouter } from 'expo-router'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import {getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useState } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Tabs, useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
-import { auth } from '../../config/FirebaseConfig'; // Adjust the import path as necessary
 import { getLocalStorage } from '../../service/Storage';
 
 export default function TabLayout() {
-  
   const router = useRouter();
-  useEffect(() =>{
-    GetUserDetail();
-  },[])
+  const { colors } = useTheme();
   
-  const GetUserDetail=async()=>{
-    const userInfo = await getLocalStorage('userDetail');
-    if(!userInfo){
-      router.replace('/Login');
+  useEffect(() =>{
+    const GetUserDetail=async()=>{
+      const userInfo = await getLocalStorage('userDetail');
+      if(!userInfo){
+        router.replace('/Login');
+      }
     }
-  }
+    GetUserDetail();
+  },[router])
 
   return (
    <Tabs screenOptions={{
-    headerShown: false
+    headerShown: false,
+    tabBarStyle: {
+      backgroundColor: colors.card,
+      borderTopColor: colors.border,
+    },
+    tabBarActiveTintColor: colors.primary,
+    tabBarInactiveTintColor: colors.textSecondary,
     }}>
     
 
