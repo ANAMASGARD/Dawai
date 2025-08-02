@@ -40,11 +40,11 @@ export default function TabLayout() {
       }}
     />
     <Tabs.Screen
-      name="AddNew"
+      name="History"
       options={{
-        title: 'Add New',
+        title: 'History',
         tabBarIcon: ({ color,size }) => (
-         <Feather name="plus-circle" size={size} color={color} />
+         <FontAwesome5 name="history" size={size} color={color} />
         ),
       }}
     />
